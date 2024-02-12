@@ -166,7 +166,7 @@ def forgot_password(request):
             token = default_token_generator.make_token(user)
             # Build password reset link
             uid = urlsafe_b64encode(force_bytes(user.pk))
-            reset_link = f"http://127.0.0.1:8000/authentication/reset-password/{uid}/{token}"
+            reset_link = f"http://3.19.242.75:8000/authentication/reset-password/{uid}/{token}"
             # Send reset link via email
             subject = "Password Reset"
             message = render_to_string('reset_password_email.html', {

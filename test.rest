@@ -12,14 +12,14 @@ Content-Type: application/json
 
 ###
 
-GET http://127.0.0.1:8000/api/authentication/testtoken 
+GET http://3.19.242.75:8000/api/authentication/testtoken 
 Content-Type: application/json 
 Authorization: Token f968d76400d70a1865e7bf4648debd41b843a08d
 
 
 ###
 
-GET http://127.0.0.1:8000/api/category-list/
+GET http://3.19.242.75:8000/api/category-list/
 Content-Type: application/json 
 Authorization: Token f968d76400d70a1865e7bf4648debd41b843a08d
 
@@ -30,19 +30,19 @@ Content-Type: application/json
 Authorization: Token f968d76400d70a1865e7bf4648debd41b843a08d
 
 ###
-GET http://127.0.0.1:8000/api/item-detail/
+GET http://3.19.242.75:8000/api/item-detail/
 Content-Type: application/json 
 Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
 ###
 
-POST http://127.0.0.1:8000/api/item-create/
+POST http://3.19.242.75:8000/api/item-create/
 Content-Type: application/json 
 Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
 {
-    "SKU": "XYZTA",
-    "name": "Item2",
+    "SKU": "UYRHFG",
+    "name": "Item7",
     "category": "test1",
     "tags": "test",
     "stock_status": "In Stock",
@@ -51,7 +51,7 @@ Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
 ###
 
-POST http://127.0.0.1:8000/api/category-create/
+POST http://3.19.242.75:8000/api/category-create/
 Content-Type: application/json 
 Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
@@ -61,13 +61,13 @@ Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
 ###
 
-POST http://127.0.0.1:8000/api/item-update/ABCDEF
+POST http://3.19.242.75:8000/api/item-update/?SKU=UYRHFG
 Content-Type: application/json 
 Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
 {
-    "SKU": "ABCDEFG",
-    "name": "Item3",
+    "SKU": "UYRHFG",
+    "name": "item99",
     "category": "test1",
     "tags": "test",
     "stock_status": "In Stock",
@@ -76,19 +76,19 @@ Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
 ###
 
-DELETE  http://127.0.0.1:8000/api/item-delete/?SKU=ABCDE
+DELETE  http://3.19.242.75:8000/api/item-delete/?SKU=ABCDE
 Content-Type: application/json 
 Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
 ###
 
-DELETE  http://127.0.0.1:8000/api/category-delete/?category=test1
+DELETE  http://3.19.242.75:8000/api/category-delete/?category=test1
 Content-Type: application/json 
 Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
 ###
 
-POST http://127.0.0.1:8000/api/authentication/forgot-password 
+POST http://3.19.242.75:8000/api/authentication/forgot-password 
 Content-Type: application/json
 
 { "email": "sushrut.diwan.sd@gmail.com" }
