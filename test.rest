@@ -1,11 +1,11 @@
-POST http://127.0.0.1:8000/api/authentication/signup 
+POST http://3.19.242.75:8000/api/authentication/signup 
 Content-Type: application/json
 
 { "username": "sushrutDiwan", "password": "Pass1234!", "email": "sushrut.diwan.sd@gmail.com" }
 
 ###
 
-POST http://127.0.0.1:8000/api/authentication/login  
+POST http://3.19.242.75:8000/api/authentication/login  
 Content-Type: application/json
 
 { "username": "adi", "password": "Pass1234!" }
@@ -25,7 +25,7 @@ Authorization: Token f968d76400d70a1865e7bf4648debd41b843a08d
 
 ###
 
-GET http://127.0.0.1:8000/api/item-list/
+GET http://3.19.242.75:8000/api/item-list/
 Content-Type: application/json 
 Authorization: Token f968d76400d70a1865e7bf4648debd41b843a08d
 
