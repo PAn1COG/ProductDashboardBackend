@@ -1,0 +1,832 @@
+﻿Authentication APIs
+API Endpoint: User Signup
+This API endpoint allows users to sign up by creating a new account.
+Endpoint URL
+ruby
+POST http://3.19.242.75:8000/api/authentication/signup
+
+
+Request Method
+POST
+
+
+Request Headers
+* Content-Type: application/json
+Authentication
+This endpoint does not require authentication.
+Request Body
+The request body should contain JSON data with the following fields:
+* username: Required. The username for the new user.
+* password: Required. The password for the new user.
+* email: Required. The email address for the new user.
+Response
+* Status Code: 200 OK
+* Content-Type: application/json
+Sample Request
+http
+POST http://3.19.242.75:8000/api/authentication/signup
+Content-Type: application/json
+
+
+{
+    "username": "sushrutDiwan",
+    "password": "Pass1234!",
+    "email": "sushrut.diwan.sd@gmail.com"
+}
+
+
+Sample Response
+json
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6InN1c2h... (token)",
+    "user": {
+        "id": 1,
+        "username": "sushrutDiwan",
+        "email": "sushrut.diwan.sd@gmail.com"
+    }
+}
+
+
+Notes
+* This endpoint creates a new user account with the provided username, password, and email.
+* Upon successful account creation, a token is generated for the new user.
+* The generated token is returned in the response along with user details.
+* If there are validation errors in the request data, appropriate error messages will be returned.
+Errors
+* 200 OK: Returned when the signup is successful.
+* 400 Bad Request: Returned when there are validation errors in the request data.
+
+
+
+
+
+
+API Endpoint: User Login
+This API endpoint allows users to log in and obtain an authentication token.
+Endpoint URL
+ruby
+POST http://3.19.242.75:8000/api/authentication/login
+
+
+Request Method
+POST
+
+
+Request Headers
+* Content-Type: application/json
+Authentication
+This endpoint does not require authentication.
+Request Body
+The request body should contain JSON data with the following fields:
+* username: Required. The username of the user trying to log in.
+* password: Required. The password of the user trying to log in.
+Response
+* Status Code: 200 OK
+* Content-Type: application/json
+Sample Request
+http
+POST http://3.19.242.75:8000/api/authentication/login
+Content-Type: application/json
+
+
+{
+    "username": "adi",
+    "password": "Pass1234!"
+}
+
+
+Sample Response
+json
+{
+    "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImFkaSIsImV4cCI6MT... (token)",
+    "user": {
+        "id": 1,
+        "username": "adi",
+        "email": "adi@example.com"
+    }
+}
+
+
+Notes
+* This endpoint verifies the provided username and password.
+* If the credentials are correct, an authentication token is generated for the user.
+* The generated token is returned in the response along with user details.
+* If the credentials are incorrect, a 403 Forbidden status code is returned.
+* If the user does not exist, a 404 Not Found status code is returned.
+Errors
+* 200 OK: Returned when the login is successful.
+* 403 Forbidden: Returned when the provided credentials are incorrect.
+* 404 Not Found: Returned when the user does not exist.
+
+
+
+
+
+
+
+
+
+
+
+
+API Endpoint: Test Token Authentication
+This API endpoint is for testing token-based authentication.
+Endpoint URL
+ruby
+GET http://3.19.242.75:8000/api/authentication/testtoken
+
+
+Request Method
+sql
+GET
+
+
+Request Headers
+* Content-Type: application/json
+* Authorization: Token <your_token_here>
+Authentication
+This endpoint requires token-based authentication. Users must include a valid authentication token in the request headers.
+Permissions
+* Users must be authenticated to access this endpoint.
+* Only authenticated users with appropriate permissions are allowed to access this endpoint.
+Response
+* Status Code: 200 OK
+* Content-Type: text/plain
+Sample Request
+http
+GET http://3.19.242.75:8000/api/authentication/testtoken
+Content-Type: application/json 
+Authorization: Token f968d76400d70a1865e7bf4648debd41b843a08d
+
+
+Sample Response
+json
+"passed!"
+
+
+Notes
+* This endpoint is for testing token-based authentication.
+* If the authentication token is valid, the response will be "passed!".
+* If the token is not provided or invalid, a 401 Unauthorized status code will be returned.
+Errors
+* 401 Unauthorized: Returned when the authentication token is missing or invalid.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+API Endpoint: Forgot Password
+This API endpoint allows users to request a password reset link via email if they have forgotten their password.
+Endpoint URL
+ruby
+POST http://127.0.0.1:8000/api/authentication/forgot-password
+
+
+Request Method
+POST
+
+
+Request Headers
+* Content-Type: application/json
+Authentication
+This endpoint does not require authentication.
+Request Body
+The request body should contain JSON data with the following field:
+* email: Required. The email address associated with the user's account for which the password reset link will be sent.
+Response
+* Status Code: 200 OK
+* Content-Type: text/plain
+Sample Request
+http
+POST http://127.0.0.1:8000/api/authentication/forgot-password
+Content-Type: application/json
+
+
+{
+    "email": "sushrut.diwan.sd@gmail.com"
+}
+
+
+Sample Response
+json
+"Password reset link sent if the email exists."
+
+
+Notes
+* This endpoint sends a password reset link via email to the provided email address if the account associated with that email exists.
+* The password reset link contains a unique token and a user ID encoded in base64.
+* The link is valid for a limited time and allows the user to reset their password.
+* If the email field is missing in the request data, a 400 Bad Request error will be returned.
+Errors
+* 400 Bad Request: Returned when the email field is missing in the request data
+
+
+
+
+
+
+
+
+API Endpoint: Reset Password
+This API endpoint allows users to reset their password using a password reset link.
+Endpoint URL
+ruby
+POST http://127.0.0.1:8000/api/authentication/reset-password/?uidEncoded=NQ&token=c2afmc-f62c49690c4f273c6abb0ddf25069513
+
+
+Request Method
+POST
+
+
+Request Headers
+* Content-Type: application/json
+Authentication
+This endpoint does not require authentication.
+Query Parameters
+* uidEncoded: Required. The user ID encoded in base64.
+* token: Required. The token included in the password reset link.
+Request Body
+The request body should contain JSON data with the following field:
+* new_password: Required. The new password for the user account.
+Response
+* Status Code: 200 OK
+* Content-Type: text/plain
+Sample Request
+http
+POST http://127.0.0.1:8000/api/authentication/reset-password/?uidEncoded=NQ&token=c2afmc-f62c49690c4f273c6abb0ddf25069513
+Content-Type: application/json
+
+
+{
+    "new_password": "newPassword"
+}
+
+
+Sample Response
+json
+"Password reset successfully."
+
+
+Notes
+* This endpoint allows users to reset their password using a password reset link.
+* The link contains a unique token and a user ID encoded in base64.
+* The user ID and token are used to verify the authenticity of the password reset request.
+* If the reset link or token is invalid, a 400 Bad Request error will be returned.
+* If the new password is missing in the request data, a 400 Bad Request error will be returned.
+Errors
+* 400 Bad Request: Returned when the reset link or token is invalid, or when the new password is missing.
+
+
+Dashboard APIs
+API Endpoint: Get All Items
+This API endpoint allows users to retrieve a paginated list of items from the database.
+Endpoint URL
+ruby
+GET http://3.19.242.75:8000/api/item-list/
+
+
+Request Method
+sql
+GET
+Request Headers
+* Content-Type: application/json
+* Authorization: Token <your_token_here>
+Authentication
+This endpoint requires token-based authentication. You must include a valid authentication token in the request headers.
+Permissions
+* Users must be authenticated to access this endpoint.
+* Only authenticated users with the appropriate permissions are allowed to retrieve item data.
+Query Parameters
+* search: Optional. Perform a case-insensitive search on item names.
+* order_by: Optional. Specify the field to order the results by.
+* sku: Optional. Filter items by SKU (Stock Keeping Unit).
+* name: Optional. Filter items by name.
+* category: Optional. Filter items by category name.
+* stock_status: Optional. Filter items by stock status.
+Response
+* Status Code: 200 OK
+* Content-Type: application/json
+Sample Request
+http
+GET http://3.19.242.75:8000/api/item-list/
+Content-Type: application/json 
+Authorization: Token f968d76400d70a1865e7bf4648debd41b843a08d
+
+
+Sample Response
+json
+{
+    "count": 20,
+    "next": "http://3.19.242.75:8000/api/item-list/?page=2",
+    "previous": null,
+    "results": [
+        {
+            "id": 1,
+            "name": "Sample Item 1",
+            "sku": "SKU123",
+            "category": "Electronics",
+            "stock_status": "In Stock"
+        },
+        {
+            "id": 2,
+            "name": "Sample Item 2",
+            "sku": "SKU456",
+            "category": "Clothing",
+            "stock_status": "Out of Stock"
+        },
+        ...
+    ]
+}
+
+
+Notes
+* Pagination is applied with a default page size of 5 items per page.
+* Use the page query parameter to navigate through paginated results.
+* Query parameters can be combined to perform more specific searches.
+Errors
+* 404 Not Found: Returned when no items match the specified criteria.
+
+
+
+
+
+
+API Endpoint: Get All Categories
+This API endpoint retrieves a list of all categories from the database.
+Endpoint URL
+ruby
+GET http://3.19.242.75:8000/api/category-list/
+
+
+Request Method
+sql
+GET
+Request Headers
+* Content-Type: application/json
+* Authorization: Token <your_token_here>
+Authentication
+This endpoint requires token-based authentication. Users must include a valid authentication token in the request headers.
+Permissions
+* Users must be authenticated to access this endpoint.
+* Only authenticated users with appropriate permissions are allowed to retrieve category data.
+Response
+* Status Code: 200 OK
+* Content-Type: application/json
+Sample Request
+http
+GET http://3.19.242.75:8000/api/category-list/
+Content-Type: application/json 
+Authorization: Token f968d76400d70a1865e7bf4648debd41b843a08d
+
+
+Sample Response
+json
+[
+    {
+        "name": "Electronics"
+    },
+    {
+        "name": "Clothing"
+    },
+    ...
+]
+
+
+Notes
+* Sorting and pagination have been implemented for efficient retrieval of large datasets.
+* Pagination is applied with a default page size.
+* To navigate through paginated results, use the page query parameter.
+* Additional parameters for sorting and customizing pagination can be added as needed.
+Errors
+* 404 Not Found: Returned when no categories are found.
+
+
+
+
+
+
+
+
+
+
+API Endpoint: Get Item Details
+This API endpoint retrieves details of a specific item based on its SKU (Stock Keeping Unit).
+Endpoint URL
+ruby
+GET http://3.19.242.75:8000/api/item-detail/?SKU=XYZTA
+
+
+Request Method
+sql
+GET
+
+
+Request Headers
+* Content-Type: application/json
+* Authorization: Token <your_token_here>
+Authentication
+This endpoint requires token-based authentication. Users must include a valid authentication token in the request headers.
+Permissions
+* Users must be authenticated to access this endpoint.
+* Only authenticated users with appropriate permissions are allowed to retrieve item details.
+Query Parameters
+* SKU: Required. The unique identifier (Stock Keeping Unit) of the item.
+Response
+* Status Code: 200 OK
+* Content-Type: application/json
+Sample Request
+http
+GET http://3.19.242.75:8000/api/item-detail/?SKU=XYZTA
+Content-Type: application/json 
+Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
+
+
+Sample Response
+json
+{
+    "id": 123,
+    "name": "Sample Item",
+    "SKU": "XYZTA",
+    "category": "Electronics",
+    "description": "Sample description of the item",
+    "price": 99.99,
+    "stock_status": "In Stock"
+}
+
+
+Notes
+* This endpoint retrieves details of a specific item identified by its SKU.
+* The SKU parameter is required in the query string.
+* If the provided SKU does not exist in the database, a 404 error will be returned.
+Errors
+* 400 Bad Request: Returned when the SKU parameter is missing in the request.
+* 404 Not Found: Returned when the specified SKU does not exist in the database.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+API Endpoint: Create Category
+This API endpoint allows users to create a new category.
+Endpoint URL
+ruby
+POST http://3.19.242.75:8000/api/category-create/
+
+
+Request Method
+POST
+
+
+Request Headers
+* Content-Type: application/json
+* Authorization: Token <your_token_here>
+Authentication
+This endpoint requires token-based authentication. Users must include a valid authentication token in the request headers.
+Permissions
+* Users must be authenticated to access this endpoint.
+* Only authenticated users with appropriate permissions are allowed to create new categories.
+Request Body
+The request body should contain JSON data with the following fields:
+* name: Required. The name of the new category.
+Response
+* Status Code: 201 Created
+* Content-Type: application/json
+Sample Request
+http
+POST http://3.19.242.75:8000/api/category-create/
+Content-Type: application/json 
+Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
+
+
+{
+    "name": "test1"
+}
+
+
+Sample Response
+json
+{
+    "name": "test1"
+}
+
+
+Notes
+* This endpoint creates a new category with the provided name.
+* If the request is successful, the newly created category will be returned in the response.
+* If there are validation errors in the request data, a 400 error will be returned along with the error details.
+Errors
+* 400 Bad Request: Returned when there are validation errors in the request data.
+
+
+
+
+
+
+
+
+
+
+API Endpoint: Create Item
+This API endpoint allows users to create a new item.
+Endpoint URL
+ruby
+POST http://127.0.0.1:8000/api/item-create/
+
+
+Request Method
+POST
+
+
+Request Headers
+* Content-Type: application/json
+* Authorization: Token <your_token_here>
+Authentication
+This endpoint requires token-based authentication. Users must include a valid authentication token in the request headers.
+Permissions
+* Users must be authenticated to access this endpoint.
+* Only authenticated users with appropriate permissions are allowed to create new items.
+Request Body
+The request body should contain JSON data with the following fields:
+* SKU: Required. The Stock Keeping Unit of the item.
+* name: Required. The name of the item.
+* category: Required. The category of the item.
+* tags: Optional. Any tags associated with the item.
+* stock_status: Required. The stock status of the item (e.g., "In Stock", "Out of Stock").
+* available_stock: Required. The available stock quantity of the item.
+Response
+* Status Code: 201 Created
+Sample Request
+http
+POST http://127.0.0.1:8000/api/item-create/
+Content-Type: application/json 
+Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
+
+
+{
+    "SKU": "ASDOTNE",
+    "name": "Item",
+    "category": "test1",
+    "tags": "test",
+    "stock_status": "In Stock",
+    "available_stock": 10
+}
+
+
+Notes
+* This endpoint creates a new item with the provided data.
+* If the request is successful, a 201 Created status code is returned.
+* If there are validation errors in the request data, a 400 Bad Request status code is returned along with the error details.
+Errors
+* 400 Bad Request: Returned when there are validation errors in the request data.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+API Endpoint: Update Item
+This API endpoint allows users to update an existing item.
+Endpoint URL
+ruby
+POST http://3.19.242.75:8000/api/item-update/?SKU=UYRHFG
+
+
+Request Method
+POST
+
+
+Request Headers
+* Content-Type: application/json
+* Authorization: Token <your_token_here>
+Authentication
+This endpoint requires token-based authentication. Users must include a valid authentication token in the request headers.
+Permissions
+* Users must be authenticated to access this endpoint.
+* Only authenticated users with appropriate permissions are allowed to update existing items.
+Query Parameter
+* SKU: Required. The unique identifier (Stock Keeping Unit) of the item to be updated.
+Request Body
+The request body should contain JSON data with the following fields:
+* SKU: Required. The Stock Keeping Unit of the item. This field must match the SKU provided in the query parameter.
+* name: Required. The updated name of the item.
+* category: Required. The updated category of the item.
+* tags: Optional. Any updated tags associated with the item.
+* stock_status: Required. The updated stock status of the item (e.g., "In Stock", "Out of Stock").
+* available_stock: Required. The updated available stock quantity of the item.
+Response
+* Status Code: 200 OK
+* Content-Type: application/json
+Sample Request
+http
+POST http://3.19.242.75:8000/api/item-update/?SKU=UYRHFG
+Content-Type: application/json 
+Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
+
+
+{
+    "SKU": "UYRHFG",
+    "name": "item99",
+    "category": "test1",
+    "tags": "test",
+    "stock_status": "In Stock",
+    "available_stock": 1000
+}
+
+
+Notes
+* This endpoint updates the details of an existing item identified by its SKU.
+* The SKU parameter is required in the query string and must match the SKU provided in the request body.
+* If the request is successful, the updated item details will be returned in the response.
+* If there are validation errors in the request data, appropriate error messages will be returned.
+Errors
+* 404 Not Found: Returned when the specified SKU does not exist in the database.
+
+
+
+
+
+
+
+
+API Endpoint: Delete Item
+This API endpoint allows users to delete an existing item.
+Endpoint URL
+ruby
+DELETE http://3.19.242.75:8000/api/item-delete/?SKU=XYZTA
+
+
+Request Method
+sql
+DELETE
+
+
+Request Headers
+* Content-Type: application/json
+* Authorization: Token <your_token_here>
+Authentication
+This endpoint requires token-based authentication. Users must include a valid authentication token in the request headers.
+Permissions
+* Users must be authenticated to access this endpoint.
+* Only authenticated users with appropriate permissions are allowed to delete items.
+Query Parameter
+* SKU: Required. The unique identifier (Stock Keeping Unit) of the item to be deleted.
+Response
+* Status Code: 200 OK
+* Content-Type: text/plain
+Sample Request
+http
+DELETE http://3.19.242.75:8000/api/item-delete/?SKU=XYZTA
+Content-Type: application/json 
+Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
+
+
+Sample Response
+json
+"deleted"
+
+
+Notes
+* This endpoint deletes the item with the provided SKU from the database.
+* The SKU parameter is required in the query string to identify the item to be deleted.
+* If the deletion is successful, a confirmation message is returned in the response.
+* If the specified SKU does not exist in the database, no action is taken.
+Errors
+* 400 Bad Request: Returned when the SKU parameter is missing in the request.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+API Endpoint: Delete Category
+This API endpoint allows users to delete an existing category and its associated items.
+Endpoint URL
+ruby
+DELETE http://3.19.242.75:8000/api/category-delete/?category=test1
+
+
+Request Method
+sql
+DELETE
+Request Headers
+* Content-Type: application/json
+* Authorization: Token <your_token_here>
+Authentication
+This endpoint does not require authentication.
+Query Parameter
+* category: Required. The name of the category to be deleted.
+Response
+* Status Code: 204 No Content
+* Content-Type: application/json
+Sample Request
+http
+DELETE http://3.19.242.75:8000/api/category-delete/?category=test1
+Content-Type: application/json 
+Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
+
+
+Sample Response
+json
+{
+    "message": "Category and associated items deleted successfully"
+}
+
+
+Notes
+* This endpoint deletes the category with the provided name and its associated items from the database.
+* The category name is required in the query string to identify the category to be deleted.
+* If the deletion is successful, a success message is returned in the response.
+* If the specified category does not exist in the database, a 404 error is returned.
+Errors
+* 400 Bad Request: Returned when the category parameter is missing in the request.
+* 404 Not Found: Returned when the specified category does not exist.
