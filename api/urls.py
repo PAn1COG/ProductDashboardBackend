@@ -13,6 +13,6 @@ urlpatterns = [
     re_path('authentication/signup', views.signup),
     re_path('authentication/testtoken', views.testToken),
     re_path('authentication/forgot-password', views.forgot_password),
-    re_path('authentication/reset-password/<str:uidb64>/<str:token>', views.reset_password),
+    re_path('authentication/reset-password', views.reset_password),
 ]
  

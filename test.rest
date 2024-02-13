@@ -30,7 +30,13 @@ Content-Type: application/json
 Authorization: Token f968d76400d70a1865e7bf4648debd41b843a08d
 
 ###
-GET http://3.19.242.75:8000/api/item-detail/
+
+GET http://127.0.0.1:8000/api/item-list/?page=1
+Content-Type: application/json 
+Authorization: Token f968d76400d70a1865e7bf4648debd41b843a08d
+
+###
+GET http://3.19.242.75:8000/api/item-detail/?SKU=XYZTA
 Content-Type: application/json 
 Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
@@ -41,8 +47,23 @@ Content-Type: application/json
 Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
 {
-    "SKU": "UYRHFG",
-    "name": "Item7",
+    "SKU": "ASDFEW",
+    "name": "Item11",
+    "category": "test1",
+    "tags": "test",
+    "stock_status": "Out of Stock",
+    "available_stock": 10
+}
+
+###
+
+POST http://127.0.0.1:8000/api/item-create/
+Content-Type: application/json 
+Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
+
+{
+    "SKU": "ASDOTNE",
+    "name": "Item",
     "category": "test1",
     "tags": "test",
     "stock_status": "In Stock",
@@ -56,7 +77,7 @@ Content-Type: application/json
 Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
 {
-    "name": "test1"
+    "name": "test2"
 }
 
 ###
@@ -76,7 +97,7 @@ Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
 ###
 
-DELETE  http://3.19.242.75:8000/api/item-delete/?SKU=ABCDE
+DELETE  http://3.19.242.75:8000/api/item-delete/?SKU=XYZTA
 Content-Type: application/json 
 Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
@@ -87,8 +108,35 @@ Content-Type: application/json
 Authorization: Token 989ac80c336085e648e00f5c269b9554658bc838
 
 ###
+POST http://127.0.0.1:8000/api/authentication/signup 
+Content-Type: application/json
 
-POST http://3.19.242.75:8000/api/authentication/forgot-password 
+{ "username": "sushrutDiwan", "password": "Pass1234!", "email": "sushrut.diwan.sd@gmail.com" }
+
+###
+
+POST http://127.0.0.1:8000/api/authentication/login  
+Content-Type: application/json
+
+{ "username": "sushrutDiwan", "password": "newPassword" }
+
+###
+
+GET http://127.0.0.1:8000/api/authentication/testtoken 
+Content-Type: application/json 
+Authorization: Token f968d76400d70a1865e7bf4648debd41b843a08d
+
+
+###
+
+POST http://127.0.0.1:8000/api/authentication/forgot-password 
 Content-Type: application/json
 
 { "email": "sushrut.diwan.sd@gmail.com" }
+
+###
+
+POST http://127.0.0.1:8000/api/authentication/reset-password/?uidEncoded=NQ&token=c2afmc-f62c49690c4f273c6abb0ddf25069513
+Content-Type: application/json
+
+{"new_password" : "newPassword" }

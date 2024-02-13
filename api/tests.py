@@ -23,8 +23,6 @@ class GetAllItemsAPITest(TestCase):
         Item.objects.create(SKU='SKU456', name='Item 2', category=category2, stock_status='Out of Stock', available_stock=0)
         Item.objects.create(SKU='SKU789', name='Item 3', category=category1, stock_status='Backordered', available_stock=5)
 
-
-
         # Making a GET request to the API
         request = self.factory.get('/api/item-list/')
         force_authenticate(request, user=self.user, token=self.token)
@@ -34,7 +32,7 @@ class GetAllItemsAPITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Asserting that the correct number of items is returned
-        self.assertEqual(len(response.data), 3)  # Corrected to expect 3 items
+        self.assertEqual(len(response.data['results']), 3)  # Corrected to expect 3 items
 
     def test_get_all_items_negative(self):
         # Making a GET request to the API without creating any items
@@ -61,7 +59,8 @@ class GetAllItemsAPITest(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Asserting that only items with the specified category are returned
-        self.assertEqual(len(response.data), 2)
+        self.assertEqual(len(response.data['results']), 2)
+
 class GetAllCategoriesAPITest(TestCase):
     def setUp(self):
         self.factory = APIRequestFactory()
@@ -226,5 +225,6 @@ class CreateItemAPITest(TestCase):
 
         # Asserting that the response status code is 401
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
 
 

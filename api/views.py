@@ -1,7 +1,9 @@
 from base64 import urlsafe_b64decode, urlsafe_b64encode
+from rest_framework.pagination import PageNumberPagination
 from rest_framework import status
 from .models import Item, Category
 from .serializers import CategorySerializer, ItemSerializer, UserSerializer
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from rest_framework.authtoken.models import Token
 from django.contrib.auth.models import User
 from rest_framework.authentication import SessionAuthentication, TokenAuthentication
@@ -18,6 +20,10 @@ from django.utils.encoding import force_bytes
 @authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def getAllItems(request):
+
+    paginator = PageNumberPagination()
+    paginator.page_size = 5  # Set the number of items per page
+
     queryset = Item.objects.all()
     search_param = request.GET.get('search')
     order_by_param = request.GET.get('order_by')
@@ -45,9 +51,10 @@ def getAllItems(request):
         queryset = queryset.filter(stock_status=search_stock_status)
 
     if not queryset.exists():
-        return Response(0,status=status.HTTP_404_NOT_FOUND)
-    serializer = ItemSerializer(queryset, many = True)
-    return Response(serializer.data)
+        return Response([],status=status.HTTP_404_NOT_FOUND)
+    paginated_queryset = paginator.paginate_queryset(queryset, request)
+    serializer = ItemSerializer(paginated_queryset, many = True)
+    return paginator.get_paginated_response(serializer.data)
 
 @api_view(['GET'])
 @authentication_classes([TokenAuthentication])
@@ -69,6 +76,8 @@ def getItem(request):
     if not SKU :
         return Response("Please provide SKU",status=status.HTTP_400_BAD_REQUEST)
     item = Item.objects.get(SKU=SKU)
+    if not item:
+        return Response("Not found", status=status.HTTP_404_NOT_FOUND)
     serializer = ItemSerializer(item, many = False)
     return Response(serializer.data)
 
@@ -99,10 +108,11 @@ def createItem(request):
 def updateItem(request):
     item = Item.objects.get(SKU=request.GET.get('SKU'))
     serializer = ItemSerializer(instance=item, data= request.data)
-    
+    if not item:
+        return Response("Not found", status=status.HTTP_404_NOT_FOUND)
     if serializer.is_valid():
         serializer.save()
-    return Response(serializer.data)
+    return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['DELETE'])
 @authentication_classes([TokenAuthentication])
@@ -112,6 +122,8 @@ def deleteItem(request):
     if not SKU :
         return Response('Please provide SKU')
     item = Item.objects.filter(SKU=SKU)
+    if not item:
+        return Response("Not found", status=status.HTTP_404_NOT_FOUND)
     item.delete()
     return Response('deleted')
 
@@ -134,7 +146,7 @@ def login(request):
     user = get_object_or_404(User, username=request.data['username'])
     if not user.check_password(request.data['password']):
         return Response("missing user", status=status.HTTP_403_FORBIDDEN)
-    token, created = Token.objects.get_or_create(user=user)
+    token, _ = Token.objects.get_or_create(user=user)
     serializer = UserSerializer(user)
     return Response({'token': token.key, 'user': serializer.data})
    
@@ -164,29 +176,34 @@ def forgot_password(request):
         user = User.objects.filter(email=email).first()
         if user:
             token = default_token_generator.make_token(user)
+            uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
             # Build password reset link
-            uid = urlsafe_b64encode(force_bytes(user.pk))
-            reset_link = f"http://3.19.242.75:8000/authentication/reset-password/{uid}/{token}"
+            uid = user.pk
+            reset_link = f"http://127.0.0.1:8000/api/authentication/reset-password/?uidEncoded={uidb64}&token={token}"
             # Send reset link via email
             subject = "Password Reset"
-            message = render_to_string('reset_password_email.html', {
-                'reset_link': reset_link,
-            })
+            message = reset_link
             send_mail(subject, message, 'from@example.com', [email])
         return Response("Password reset link sent if the email exists.", status=status.HTTP_200_OK)
     return Response("Email field is required.", status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['POST'])
-def reset_password(request, uidb64, token):
+def reset_password(request):
     # Decode user ID from base64
+    uidEncoded = request.GET.get('uidEncoded')
+    uid = urlsafe_base64_decode(uidEncoded).decode()
+    token = request.GET.get('token')
+    print(uid)
+    print(token)
     try:
-        uid = urlsafe_b64decode(uidb64).decode()
         user = User.objects.get(pk=uid)
     except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
+        print("no user found")
     if user is not None and default_token_generator.check_token(user, token):
         # Update user's password
         new_password = request.data.get('new_password')
+        print(new_password)
         if new_password:
             user.set_password(new_password)
             user.save()
