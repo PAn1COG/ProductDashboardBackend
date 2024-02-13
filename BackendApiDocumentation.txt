@@ -4,6 +4,8 @@ I have uploaded the Django applicatiopn to EC2 and its running.
 User can Either register and get the Auth Token or 
 here is a sample AUth Token : 'f968d76400d70a1865e7bf4648debd41b843a08d'
 
+You can also find some sample API calls that I used for testing purposes in test.rest file.
+
 -------------------------------------------------------------------------------
 
 Authentication APIs
