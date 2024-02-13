@@ -1,4 +1,12 @@
-﻿Authentication APIs
+﻿Documentation for the APIs
+
+I have uploaded the Django applicatiopn to EC2 and its running.
+User can Either register and get the Auth Token or 
+here is a sample AUth Token : 'f968d76400d70a1865e7bf4648debd41b843a08d'
+
+-------------------------------------------------------------------------------
+
+Authentication APIs
 API Endpoint: User Signup
 This API endpoint allows users to sign up by creating a new account.
 Endpoint URL
@@ -121,14 +129,6 @@ Errors
 
 
 
-
-
-
-
-
-
-
-
 API Endpoint: Test Token Authentication
 This API endpoint is for testing token-based authentication.
 Endpoint URL
@@ -170,16 +170,6 @@ Notes
 * If the token is not provided or invalid, a 401 Unauthorized status code will be returned.
 Errors
 * 401 Unauthorized: Returned when the authentication token is missing or invalid.
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -228,10 +218,6 @@ Notes
 * If the email field is missing in the request data, a 400 Bad Request error will be returned.
 Errors
 * 400 Bad Request: Returned when the email field is missing in the request data
-
-
-
-
 
 
 
@@ -356,10 +342,6 @@ Errors
 * 404 Not Found: Returned when no items match the specified criteria.
 
 
-
-
-
-
 API Endpoint: Get All Categories
 This API endpoint retrieves a list of all categories from the database.
 Endpoint URL
@@ -474,22 +456,6 @@ Errors
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 API Endpoint: Create Category
 This API endpoint allows users to create a new category.
 Endpoint URL
@@ -540,12 +506,6 @@ Notes
 * If there are validation errors in the request data, a 400 error will be returned along with the error details.
 Errors
 * 400 Bad Request: Returned when there are validation errors in the request data.
-
-
-
-
-
-
 
 
 
@@ -602,32 +562,6 @@ Notes
 * If there are validation errors in the request data, a 400 Bad Request status code is returned along with the error details.
 Errors
 * 400 Bad Request: Returned when there are validation errors in the request data.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -692,10 +626,6 @@ Errors
 
 
 
-
-
-
-
 API Endpoint: Delete Item
 This API endpoint allows users to delete an existing item.
 Endpoint URL
@@ -740,50 +670,6 @@ Notes
 * If the specified SKU does not exist in the database, no action is taken.
 Errors
 * 400 Bad Request: Returned when the SKU parameter is missing in the request.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
