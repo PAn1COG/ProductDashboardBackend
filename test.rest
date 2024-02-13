@@ -129,14 +129,14 @@ Authorization: Token f968d76400d70a1865e7bf4648debd41b843a08d
 
 ###
 
-POST http://127.0.0.1:8000/api/authentication/forgot-password 
+POST http://3.19.242.75:8000/api/authentication/forgot-password 
 Content-Type: application/json
 
 { "email": "sushrut.diwan.sd@gmail.com" }
 
 ###
 
-POST http://127.0.0.1:8000/api/authentication/reset-password/?uidEncoded=NQ&token=c2afmc-f62c49690c4f273c6abb0ddf25069513
+POST http://3.19.242.75:8000/api/authentication/reset-password/?uidEncoded=NQ&token=c2bb2l-5bec8e103b6c4ada8ed863a515eb5ade
 Content-Type: application/json
 
 {"new_password" : "newPassword" }

@@ -179,7 +179,7 @@ def forgot_password(request):
             uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
             # Build password reset link
             uid = user.pk
-            reset_link = f"http://127.0.0.1:8000/api/authentication/reset-password/?uidEncoded={uidb64}&token={token}"
+            reset_link = f"http://3.19.242.75:8000/api/authentication/reset-password/?uidEncoded={uidb64}&token={token}"
             # Send reset link via email
             subject = "Password Reset"
             message = reset_link
